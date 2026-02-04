@@ -1,14 +1,19 @@
 package ml.model
 
 import ml.data.Dataset
+import ml.math.Vec
+
+import java.awt.Taskbar.Feature
 
 /** jest coś co pozwala udostępniać interfejsy innym klasą */
-trait Model  [X, Y]{
-    def fit(data: Dataset[X, Y]): TrainedModel[X, Y]
+
+//interfejs dla każdego modelu
+trait Model {
+    def fit(data: Dataset): TrainedModel
 }
 
-trait TrainedModel[X, Y]{
-    def predict(x: X): Y
+//to po wytrenowaniu modelu
+trait TrainedModel{
+    def predict(features: Vec): Double
 }
-
 

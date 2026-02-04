@@ -11,7 +11,7 @@ case class Dataset(features: Vector[Vec], //każda obserwacja to wektor cech
   def size: Int = features.size
 
   //dzieli na train/test (na ten moment łatwa wersja)
-  def split(ratio: Double = 0.8): (Dataset, Dataset) = {
+  def split(ratio: Double = 0.8): (Dataset, Dataset) = { //ratio to "scala" podziału
     val splitIndex = (features.size * ratio).toInt
     val train = Dataset(features.take(splitIndex), labels.take(splitIndex))
     val test = Dataset(features.drop(splitIndex), labels.drop(splitIndex))
