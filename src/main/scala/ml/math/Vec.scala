@@ -1,6 +1,5 @@
 package ml.math
 
-import javax.print.attribute.standard.MediaSize.Other
 
 opaque type Vec = Vector[Double]
 
