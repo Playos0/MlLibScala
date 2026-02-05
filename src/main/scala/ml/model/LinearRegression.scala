@@ -14,6 +14,12 @@ class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100) e
     var weights = Vec.fill(numFeatures + 1)(0.0) //dodaje bias jako pierwszą wage
     val mseHistory = scala.collection.mutable.ArrayBuffer[Double]() //lista z historią zmian w MSE
 
+    var bestMSE = Double.MaxValue
+    var epochWithoutImprovement = 0
+
+    val patience = 5
+    val minDelta = 1e-6
+
 
     for(epoch <- 1 to epochs){
       //predykcja dla wszystkich danych (z bias)
@@ -35,6 +41,20 @@ class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100) e
       val mse = Loss.mse(predictions, data.labels)
       mseHistory.append(mse)
       println(f"Epoch $epoch%3d: MSE = $mse%.6f")
+
+      if (bestMSE - mse > minDelta){
+        bestMSE = mse
+        epochWithoutImprovement = 0
+      }else{
+        epochWithoutImprovement += 1
+      }
+
+      if(epochWithoutImprovement >= patience){
+        println(s"Early stopping at epoch $epoch")
+        println(s"Best MSE = $bestMSE")
+        println(s"Final weights: $weights")
+        return new TrainedLinearRegression(weights)
+      }
     }
 
     println(s"Final weights: $weights")
