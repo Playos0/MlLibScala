@@ -1,7 +1,7 @@
 import ml.data.Dataset
 import ml.math
 import ml.math.Vec
-import ml.model.{LinearRegression, TrainedLinearRegression, TrainedModel}
+import ml.model.{LinearRegression, TrainedLinearRegression, TrainedModel, Loss}
 
 object Main{
   def main(args: Array[String]): Unit ={
@@ -21,8 +21,10 @@ object Main{
     val trained = model.fit(dataset)
 
     val testInput = Vec(3.0,4.0)
-    val prediction = trained.predict(testInput)
+    val predictions = dataset.features.map(trained.predict)
+    val mseValue = Loss.mse(predictions, dataset.labels)
 
-    println(s"Predykcja dla $testInput = $prediction")
+    println(s"Mean Squared Error = $mseValue")
+    println(s"Predykcja dla $testInput = $predictions")
   }
 }
