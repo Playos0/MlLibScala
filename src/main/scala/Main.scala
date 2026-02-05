@@ -52,7 +52,7 @@ object Main{
     val trainXScaled = trainX.map(scaler.transform)
     val testXScaled = testX.map(scaler.transform)
 
-    val model = new LinearRegression(learningRate = 0.1, epochs = 20)
+    val model = new LinearRegression(learningRate = 0.1, epochs = 20, batchSize = 16)
     val trained = model.fit(Dataset(trainXScaled, trainY))
     //val trained = model.fit(scaledData)
 

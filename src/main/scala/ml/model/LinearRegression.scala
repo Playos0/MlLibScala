@@ -6,55 +6,40 @@ import ml.math.Vec
 
 //Minimalny LinearRegression do przewidywania średniej etykiet w zbiorze danych
 
-class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100) extends Model {
+class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100, val batchSize: Int = 16) extends Model {
 
   override def fit(data: Dataset): TrainedModel = {
 
     val numFeatures = data.features.head.size
-    var weights = Vec.fill(numFeatures + 1)(0.0) //dodaje bias jako pierwszą wage
-    val mseHistory = scala.collection.mutable.ArrayBuffer[Double]() //lista z historią zmian w MSE
-
-    var bestMSE = Double.MaxValue
-    var epochWithoutImprovement = 0
-
-    val patience = 5
-    val minDelta = 1e-6
-
+    var weights = Vec.fill(numFeatures + 1)(0.0)  //dodaje bias jako pierwszą wage
 
     for(epoch <- 1 to epochs){
-      //predykcja dla wszystkich danych (z bias)
+
+      val shuffled = scala.util.Random.shuffle(data.features.zip(data.labels)) //zipuje dane i shuffluje
+
+      //dziele na mini "strefy" by uwydajnić model
+      val batches = shuffled.grouped(batchSize)
+
+      //pętla do nauki na każdą mini strefe
+      for( batch <- batches){
+
+        val (batchX, batchY) = batch.unzip
+
+        val gradient = batchX.zip(batchY).map { case (x, y) => val xWithBias = x.withBias
+          xWithBias * (weights.dot(xWithBias) - y)}.reduce(_ + _)
+
+        //normalizuje tu gradient
+        val avgGradient = gradient * (1.0 / batchX.size)
+
+        //na koiniec aktualizacja wag
+        weights = weights - (avgGradient *  learningRate)
+      }
       val predictions = data.features.map { x =>
-        val xWithBias = x.withBias //Vec(1.0 +: x)
-        weights.dot(xWithBias)
+        weights.dot(x.withBias)
       }
 
-      //najpierw trzeba obliczyć ten gradient
-      val gradient = data.features.zip(data.labels).map { case (x, y) =>
-        val xWithBias =x.withBias       //Vec(1.0 +: x)
-        xWithBias * (weights.dot(xWithBias) - y) //tu mnoże wektor przez skalar (to co w nawiasie)
-      }.reduce(_ + _) // sumje na koniec wszystkie wektroty w gradiecie
-
-      // normalizacja przez liczbe przypadków i aktualizacja wag AI to jednak potrafi ładny komentarz napisać jak mu się kod wyśle XD
-      weights = weights - (gradient * (learningRate / data.features.size))
-
-      //to oblicza te MSE dla każdej iteracji (epoki) i wyświetla "log"
-      val mse = Loss.mse(predictions, data.labels)
-      mseHistory.append(mse)
+      val mse = Loss.mse(predictions,data.labels)
       println(f"Epoch $epoch%3d: MSE = $mse%.6f")
-
-      if (bestMSE - mse > minDelta){
-        bestMSE = mse
-        epochWithoutImprovement = 0
-      }else{
-        epochWithoutImprovement += 1
-      }
-
-      if(epochWithoutImprovement >= patience){
-        println(s"Early stopping at epoch $epoch")
-        println(s"Best MSE = $bestMSE")
-        println(s"Final weights: $weights")
-        return new TrainedLinearRegression(weights)
-      }
     }
 
     println(s"Final weights: $weights")
