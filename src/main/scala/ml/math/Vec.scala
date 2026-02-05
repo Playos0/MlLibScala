@@ -23,6 +23,7 @@ object Vec{
     def size: Int =
       v.length
 
+    def apply(i: Int): Double = v(i)
 
     def +(other: Vec): Vec = //definicja metody dodawania dla obiektu Vec
       require(v.length == other.length) //sprawdza by dwa wektory były równej długości
