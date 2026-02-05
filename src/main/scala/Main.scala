@@ -7,7 +7,7 @@ object Main{
   def main(args: Array[String]): Unit ={
 
 
-    //wejściowo dwie cechy
+    /** wejściowo dwie cechy
     val features = Vector(
       Vec(1.0, 2.0),
       Vec(2.0, 3.0)
@@ -16,15 +16,20 @@ object Main{
     val labels = Vector(5.0, 8.0)
 
     val dataset = Dataset(features, labels)
+     */
 
-    val model = new LinearRegression()
+    val dataset = Dataset(
+      Vector(Vec(1.0,2.0), Vec(2.0, 3.0)),
+      Vector(5.0, 8.0)
+    )
+
+    val model = new LinearRegression(learningRate = 0.1, epochs = 100)
     val trained = model.fit(dataset)
 
-    val testInput = Vec(3.0,4.0)
     val predictions = dataset.features.map(trained.predict)
     val mseValue = Loss.mse(predictions, dataset.labels)
 
     println(s"Mean Squared Error = $mseValue")
-    println(s"Predykcja dla $testInput = $predictions")
+    println(s"Predykcja = $predictions")
   }
 }

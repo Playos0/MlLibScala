@@ -25,6 +25,11 @@ object Vec{
       require(v.length == other.length) //sprawdza by dwa wektory były równej długości
       v.zip(other).map(_ + _)
 
+    def -(other: Vec): Vec =
+      require(v.length == other.length)
+      v.zip(other).map(_ - _)
+
+
     def *(scalar: Double): Vec =
       v.map(_ * scalar)
 
