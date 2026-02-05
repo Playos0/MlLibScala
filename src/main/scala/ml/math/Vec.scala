@@ -10,6 +10,9 @@ object Vec{
   def apply(values: Double*): Vec =
     values.toVector
 
+  def fill(size: Int)(value: Double): Vec =
+    Vector.fill(size)(value)
+
 
   //metody do typu Vec (rozszerzenie)
   extension(v: Vec)
@@ -31,6 +34,8 @@ object Vec{
 
     def norm: Double =
       math.sqrt(v.dot(v))
+
+
 }
 
 

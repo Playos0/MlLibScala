@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MlLib.iml" filepath="$PROJECT_DIR$/.idea/modules/MlLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MlLib-build.iml" filepath="$PROJECT_DIR$/.idea/modules/MlLib-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MlLib/MlLib.MlLib-build.iml" filepath="$PROJECT_DIR$/.idea/modules/MlLib/MlLib.MlLib-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MlLib/MlLib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MlLib/MlLib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MlLib/MlLib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MlLib/MlLib.test.iml" />
     </modules>
   </component>
 </project>

@@ -8,18 +8,18 @@ import ml.math.Vec
 class LinearRegression extends Model {
 
   override def fit(data: Dataset): TrainedModel = {
-    //oblicza średnią z etykiet
-    val meanLabel = if(data.size > 0) data.labels.sum / data.labels.size else 0.0
 
-    //Zwraca wytrenowany "model" XD
-    new TrainedLinearRegression(meanLabel)
+    //Liczba cech (z założeniem że wszystkie Vec są tego samego rozmiaru)
+    val numFeatures = data.features.head.size
+
+    //WAGI NA TEST SAME 1
+    val weights = Vec.fill(numFeatures)(1.0)
+
+    new TrainedLinearRegression(weights)
   }
 }
 
-class TrainedLinearRegression(mean: Double) extends TrainedModel { //klasa powiązana bezpośrednio z interfejsem Trained Model
 
-  override def predict(features: Vec): Double = { //przyjmiuje wektor cech
-    //na ten moment przewiduje tylko średnią wartość
-    mean
-  }
-}
+
+
+
