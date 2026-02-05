@@ -36,6 +36,11 @@ object Vec{
     def *(scalar: Double): Vec =
       v.map(_ * scalar)
 
+    def / (other: Vec): Vec = {
+      require(v.length == other.length)
+      v.zip(other).map(_ / _)
+    }
+
     def dot(other: Vec): Double =
       require(v.length == other.length)
       v.zip(other).map(_ * _).sum
@@ -47,6 +52,10 @@ object Vec{
     //nowa metoda do bias
     def withBias: Vec =
       Vec.fromVector(1.0 +: v)
+
+    def map(f: Double => Double): Vec  =
+      v.map(f)
+
 }
 
 
