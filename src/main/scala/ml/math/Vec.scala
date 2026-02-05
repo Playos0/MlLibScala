@@ -5,6 +5,9 @@ opaque type Vec = Vector[Double]
 
 object Vec{
 
+  def fromVector(v: Vector[Double]): Vec =
+    v
+
   //konstruktor do Vec
 
   def apply(values: Double*): Vec =
@@ -41,6 +44,9 @@ object Vec{
       math.sqrt(v.dot(v))
 
 
+    //nowa metoda do bias
+    def withBias: Vec =
+      Vec.fromVector(1.0 +: v)
 }
 
 

@@ -26,7 +26,10 @@ object Main{
     val model = new LinearRegression(learningRate = 0.1, epochs = 20)
     val trained = model.fit(dataset)
 
-    val predictions = dataset.features.map(trained.predict)
+    val predictions = dataset.features.map { x =>
+      trained.predict(x.withBias) //dodaje bias do predykcji
+    }
+
     val mseValue = Loss.mse(predictions, dataset.labels)
 
     println(s"Predykcja = $predictions")
