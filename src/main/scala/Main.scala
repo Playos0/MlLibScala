@@ -23,13 +23,13 @@ object Main{
       Vector(5.0, 8.0)
     )
 
-    val model = new LinearRegression(learningRate = 0.1, epochs = 100)
+    val model = new LinearRegression(learningRate = 0.1, epochs = 20)
     val trained = model.fit(dataset)
 
     val predictions = dataset.features.map(trained.predict)
     val mseValue = Loss.mse(predictions, dataset.labels)
 
-    println(s"Mean Squared Error = $mseValue")
     println(s"Predykcja = $predictions")
+    println(s"Mean Squared Error = $mseValue")
   }
 }
