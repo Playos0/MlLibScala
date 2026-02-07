@@ -6,7 +6,7 @@ import ml.math.Vec
 
 //Minimalny LinearRegression do przewidywania średniej etykiet w zbiorze danych
 
-class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100, val batchSize: Int = 16) extends Model {
+class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100, val batchSize: Int = 16, val lambda: Double) extends Model {
 
   override def fit(data: Dataset): TrainedModel = {
 
@@ -25,14 +25,29 @@ class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100, v
 
         val (batchX, batchY) = batch.unzip
 
-        val gradient = batchX.zip(batchY).map { case (x, y) => val xWithBias = x.withBias
-          xWithBias * (weights.dot(xWithBias) - y)}.reduce(_ + _)
+        //nowy kod do gradientu z L2
+        val gradient = batchX.zip(batchY).map { case (x, y) =>
+          val xWithBias = x.withBias
+          xWithBias * (weights.dot(xWithBias) - y)
+        }.reduce(_ + _)
 
         //normalizuje tu gradient
-        val avgGradient = gradient * (1.0 / batchX.size)
 
+
+        val dataGradient = gradient * (1.0 / batchX.size)
         //na koiniec aktualizacja wag
-        weights = weights - (avgGradient *  learningRate)
+
+        //tu teraz konkretnie te L2
+        val l2Gradient = Vec.fromVector(
+          0.0 +: weights.tail.map(_ * lambda)
+        )
+
+
+        //final gradient
+        val avgGradient = dataGradient + l2Gradient
+
+        //i tu update wag
+        weights = weights - (avgGradient * learningRate)
       }
       val predictions = data.features.map { x =>
         weights.dot(x.withBias)

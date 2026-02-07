@@ -57,6 +57,8 @@ object Vec{
     def map(f: Double => Double): Vec  =
       v.map(f)
 
+    def tail: Vector[Double] =
+      v.drop(1)
 }
 
 
