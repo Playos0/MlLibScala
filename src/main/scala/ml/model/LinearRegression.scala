@@ -2,11 +2,17 @@ package ml.model
 
 import ml.data.Dataset
 import ml.math.Vec
+import ml.training.EarlyStopping
 
 
 //Minimalny LinearRegression do przewidywania średniej etykiet w zbiorze danych
 
-class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100, val batchSize: Int = 16, val lambda: Double) extends Model {
+class LinearRegression(val learningRate: Double = 0.01,
+                       val epochs: Int = 100,
+                       val batchSize: Int = 16,
+                       val lambda: Double,
+                       val earlyStopping: Option[EarlyStopping] = None)
+  extends Model {
 
   override def fit(data: Dataset): TrainedModel = {
 
@@ -55,6 +61,13 @@ class LinearRegression(val learningRate: Double = 0.01, val epochs: Int = 100, v
 
       val mse = Loss.mse(predictions,data.labels)
       println(f"Epoch $epoch%3d: MSE = $mse%.6f")
+
+      earlyStopping.foreach { es =>
+        if(es.shouldStop(mse)){
+          println(s"Early Stopping at epoch $epoch")
+          return new TrainedLinearRegression(weights)
+        }
+      }
     }
 
     println(s"Final weights: $weights")

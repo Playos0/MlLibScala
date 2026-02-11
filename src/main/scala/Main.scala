@@ -4,6 +4,7 @@ import ml.math.Vec
 import ml.model.{LinearRegression, TrainedLinearRegression, TrainedModel, Loss}
 import ml.preprocess.StandardScaler
 import ml.metrics.Metrics
+import ml.training.EarlyStopping
 
 
 object Main{
@@ -52,7 +53,12 @@ object Main{
     val trainXScaled = trainX.map(scaler.transform)
     val testXScaled = testX.map(scaler.transform)
 
-    val model = new LinearRegression(learningRate = 0.1, epochs = 20, batchSize = 16, lambda = 0.1)
+    val model = new LinearRegression(learningRate = 0.1,
+      epochs = 20,
+      batchSize = 16,
+      lambda = 0.1,
+      earlyStopping = Some(new EarlyStopping(patience = 5)))
+
     val trained = model.fit(Dataset(trainXScaled, trainY))
     //val trained = model.fit(scaledData)
 
