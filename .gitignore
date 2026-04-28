@@ -1,0 +1,33 @@
+# ===== Scala / sbt =====
+target/
+project/target/
+project/project/
+project/boot/
+
+# Managed sources
+lib_managed/
+src_managed/
+
+# ===== IntelliJ IDEA =====
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# ===== Bloop / Metals =====
+.bloop/
+.metals/
+
+# ===== Scala CLI =====
+.scala-build/
+
+# ===== Logs =====
+*.log
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Ammonite =====
+.ammonite/
