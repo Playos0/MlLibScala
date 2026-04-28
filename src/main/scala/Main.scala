@@ -41,7 +41,7 @@ object Main{
 
     //generowanie danych do testowania
     //20 punktów + szum
-    val features = (1 to 20).map(i => Vec(i.toDouble, (i * 2 ).toDouble)).toVector
+    val features = (1 to 100).map(i => Vec(i.toDouble, (i * 2 ).toDouble)).toVector
     val labels = features.map(v => 2 * v(0) + 3 * v(1) + 5 + scala.util.Random.nextGaussian() * 0.5)
 
     val dataset = Dataset(features, labels)
